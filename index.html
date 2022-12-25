@@ -24,11 +24,14 @@
             width:100%;
             
         }
-        .bg2{
+
+        #bg2{
+            display: none;
             background-image: none;
         }
-        .container{
-            display: grid;
+
+        #container{
+            display:none;
             grid-template-columns: 30% 30% 30%;
             height:70vh;
             width:120vh;
@@ -39,9 +42,9 @@
             row-gap: .5vh;
             background-image: none;
         }   
+
         .item{
             border: 5px solid black;
-            border-collapse: collapse;
             font-size:50px;
             text-align: center;
             display:flex;
@@ -51,6 +54,7 @@
             width:100%;
             background-image: none;
         }
+
         .container1{
             border-top:0;
             border-left:0;
@@ -79,41 +83,120 @@
             border-bottom:0;
             border-right:0;
         }
-        .head1{
+
+        #head1{
             font-size: 40px;
             margin-left: 10%;
             background-image: none;
         }
-        .head2{
+
+        #head2{
             margin-left: 10%;
             font-size: 40px;
             background-image: none;
         }
+
         .inside1{
             font-size: 40px;
             color: red;
             background-image: none;
-            font-size: 1.5em;
         }
+
         .inside2{
             margin-top: 3.5%;
             font-size: 50px;
             color: black;
             background-image: none;
-            font-size: 1.5em;
         }
-        .num{
-            font-size: 1.3em;
+
+        #input-modal{
+            position:fixed;
+            top:0;
+            left:0;
+            height:100%;
+            width:100%;
+            z-index: 1;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.45);
+        }
+
+        #modal-container{
+            position:relative;
+            background-color:#ffa343;
+            margin:auto;
+            margin-top: 12%;
+            width: 25%;
+            padding:100px;
+            padding-top: 0px;
+            padding-bottom: 150px;
+            height:25%;
+            border-style:double;
+            border-color: black;
+            border-width: 40px;
+            border-radius: 50px 10px 50px 10px;
+            box-shadow: 0 6px 15px 0 rgba(0,0,0,0.4),0 8px 40px 0 rgba(0,0,0,0.39);
+        }
+
+        #input-window{
+            font-size: 4vh;
+            text-align: center;
+            padding-top:0%;
+        }
+        
+        .lets-start{
+            margin-top: 30px;
+            height:40px;
+            width:200px;
+            border: 5px solid black;
+            border-radius: 10px;
+            background-color: #000000;
+            color: antiquewhite;
+            font-size: 1.3rem;
+        }
+
+        .lets-start:hover{
+           font-size:1.35rem;
+           height:42px;
+           width:210px;
+           color:white;
+           cursor: pointer;
+        }
+
+        .lets-start:active {
+            font-size:1.3rem;
+            height:40px;
+            width:200px;
+            cursor:pointer;
+            color:white;
+        }
+ 
+        .player{
+            border: 5px solid black;
+            border-radius: 10px;
+            height:2.3em;
+            width:53%;
+            font-size: 18px;
+        }
+
+        .player::placeholder{
+          text-align: center;
+          font-weight: lighter;
+          font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+          font-size: 16px;
+        }
+
+        .player:focus{
+            background-color: antiquewhite;
         }
     </style>
 </head>
 <body>
     <div class="bg">
-    <div class="bg2" style="margin-top: 1%;">
-        <div class="head1">Player<span class="num">1</span> <span class="inside1">&nbspX</span></div>
-        <div class="head2">Player<span class="num">2</span><span class="inside2">&nbsp&nbspO</span></div>
+    <div id="bg2" style="margin-top: 1%;">
+        <div id="head1"><span id="pl1-input"></span><span class="inside1">&nbspX</span></div>
+        <div id="head2"><span id="pl2-input"></span><span class="inside2">&nbspO</span></div>
     </div>
-    <div class="container">
+    <div id="container"><!--We have to give the display as grid in JS-->
         <div class="item container1" id="now1" onclick="myfunc('now1')"></div>
         <div class="item container2" id="now2" onclick="myfunc('now2')"></div>
         <div class="item container3" id="now3" onclick="myfunc('now3')"></div>
@@ -125,6 +208,21 @@
         <div class="item container9" id="now9" onclick="myfunc('now9')"></div>
     </div>
     </div>
+    <div>
+        <div id="input-modal">
+            <div id="modal-container">
+            <form id="input-window">
+                <p style="font-size:1.1em; margin-bottom: 20px;">ENTER NAME</p>
+                <label for="player1">Player 1:</label>
+                <input type="text" class="player" id="player1" name="player1" placeholder="Required" required><br><br>
+                <label for="player2">Player 2:</label>
+                <input type="text" class="player" id="player2" name="player2" placeholder="Required" required><br>
+                <button class="lets-start" type = "button" onclick="myfunc1()">Let's Start!</button>
+            </form>
+            </div>
+        </div>
+    </div>
+    <div id="start-again"></div>
     <script type="application/javascript">
         var i=0;
         function myfunc(s)
@@ -136,13 +234,11 @@
                 a.innerText='X';
                 m='X';
                 a.style.color = 'red';
-                a.style.fontSize = '4em';
             }
             else {
                 a.innerText='O';
                 m='O';
                 a.style.color = 'black';
-                a.style.fontSize = '4em';
             }
             i++;
             a.onclick= null;
@@ -195,6 +291,16 @@
                 if(i==9) alert("DRAW!!");
             }
         }
+        function myfunc1(){
+            if((document.getElementById("player1").value !== "")&&(document.getElementById("player2").value !== ""))
+            {
+            document.getElementById("input-modal").style.display="none";
+            document.getElementById("bg2").style.display="block";
+            document.getElementById("pl1-input").innerHTML = document.getElementById("player1").value;
+            document.getElementById("pl2-input").innerHTML= document.getElementById("player2").value;
+            document.getElementById("container").style.display = "grid";
+            }
+            }
     </script>
 </body>
 </html>
